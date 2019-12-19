@@ -1,6 +1,6 @@
 
 import hashlib;
-import random
+import random, uuid
 import time;
 
 from flask import Flask
@@ -11,9 +11,10 @@ class Blockchain:
         transactions that correspond to the link of the chain
     """
     def __init__(self):
-        self.current_transactions = []
-        self.chain = []
-        self.nodes = []
+        self.current_transactions = []      # list of transactions that are happening within the block
+        self.chain = []         # actual chain of blocks
+        self.nodes = set()      # a set containing node_urls
+        self.node_id = str(uuid.uuid4()).replace('-','')
 
         # Create the genesis block
         self.new_block(previous_hash='1', proof=100)
@@ -22,12 +23,14 @@ class Blockchain:
         """Generate pseudorandom number."""
         return ''.join([str(random.randint(0, 9)) for i in range(length)])
 
-    def create_hash(self, node):
+    def create_hash(self, block):
         """
-
-        :param node:
-        :return:
+            Perform SHA-256 hashing algorithm on the following block to encrypt it
+        :param block to hash
+        :return: hashed block component
         """
+        hash_block = hashlib.sha256(block).hexdigest()
+        return self.chain[hash_block]
 
 
 
@@ -35,9 +38,4 @@ class Blockchain:
     #     self.nonce = generatenonce(8)
 
 
-def main():
-
-    b = Blockchain({}, {}, {} , 00000000000000)
-
 if __name__ == 'main':
-    main()
