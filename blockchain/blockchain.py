@@ -1,4 +1,5 @@
 import hashlib
+import json
 import random
 import uuid
 from datetime import date
@@ -42,8 +43,8 @@ class Blockchain:
             Perform SHA-256 hashing algorithm on the following block to encrypt it
         :return: hashed block component
         """
-        hash_block = hashlib.sha256(block).hexdigest()
-        return self.chain[hash_block]
+        block_string = json.dumps(block, sort_keys=True).encode()
+        return hashlib.sha256(block_string).hexdigest()
 
 
 def generate_nonce(length=8):
@@ -54,6 +55,22 @@ def generate_nonce(length=8):
 
 
 if __name__ == '__main__':
+    block_chain1 = Blockchain()
+    block_chain2 = Blockchain()
+
+    # New blocks to test difference hash functions on the block
+    new_block1 = block_chain1.create_block(generate_nonce(), block_chain1.chain[0])
+    new_block2 = block_chain2.create_block(generate_nonce(), block_chain2.chain[0])
+
+    hash1 = block_chain1.create_hash(json.dumps(new_block1, indent=4, sort_keys=True, default=str))
+    print(f"The first hash value corresponds to {hash1}")
+
+    hash2 = block_chain1.create_hash(json.dumps(new_block2, indent=4, sort_keys=True, default=str))
+    print(f"The first hash value corresponds to {hash2}")
+    # hash1 = block_chain1.create_hash(new_block1)
+    # hash2 = block_chain2.create_hash(new_block2)
+    # print(hash1)
+    # print(hash2)
 
     """
         Tested the functionality of generating a random nonce
