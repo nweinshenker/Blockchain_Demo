@@ -38,6 +38,8 @@ class Blockchain:
         self.chain.append(block)
         return block
 
+    def proof_of_work(self, block):
+
     def create_hash(self, block):
         """
             Perform SHA-256 hashing algorithm on the following block to encrypt it
