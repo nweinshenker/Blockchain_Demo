@@ -1,11 +1,7 @@
-
-
 import hashlib
-import json
-import random, uuid
+import random
+import uuid
 from datetime import date
-
-from flask import Flask
 
 
 class Blockchain:
@@ -13,6 +9,7 @@ class Blockchain:
         Definition of a block chain structure with list of
         transactions that correspond to the link of the chain
     """
+
     def __init__(self):
         self.transactions = []
         self.chain = []
@@ -30,24 +27,19 @@ class Blockchain:
         """
         # Copy all the transactions from the previous node
         block = {'block_number': len(self.chain) + 1,
-                'timestamp': date.today(),
-                'transactions': self.transactions,
-                'nonce': nonce,
-                'previous_hash': previous_hash
-                }
+                 'timestamp': date.today(),
+                 'transactions': self.transactions,
+                 'nonce': nonce,
+                 'previous_hash': previous_hash
+                 }
 
         self.transactions = []  # reset the following block node
         self.chain.append(block)
         return block
 
-
-
-
-
     def create_hash(self, block):
         """
             Perform SHA-256 hashing algorithm on the following block to encrypt it
-        :param blocks to hash
         :return: hashed block component
         """
         hash_block = hashlib.sha256(block).hexdigest()
@@ -62,7 +54,6 @@ def generate_nonce(length=8):
 
 
 if __name__ == '__main__':
-
 
     """
         Tested the functionality of generating a random nonce
@@ -81,5 +72,3 @@ if __name__ == '__main__':
 
     # y = json.dumps(block, indent=4, sort_keys=True)
     # print(f"The following object has the json dump of" + y)
-
-
