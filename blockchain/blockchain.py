@@ -38,7 +38,8 @@ class Blockchain:
         self.chain.append(block)
         return block
 
-    def proof_of_work(self, block):
+   # def proof_of_work(self, block):
+
 
     def create_hash(self, block):
         """
