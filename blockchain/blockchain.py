@@ -1,6 +1,9 @@
+
+
 import hashlib
+import json
 import random, uuid
-import time
+from datetime import date
 
 from flask import Flask
 
@@ -10,7 +13,6 @@ class Blockchain:
         Definition of a block chain structure with list of
         transactions that correspond to the link of the chain
     """
-
     def __init__(self):
         self.transactions = []
         self.chain = []
@@ -20,12 +22,6 @@ class Blockchain:
         # Create genesis block
         self.create_block(0, '00')
 
-    def generate_nonce(length=8):
-        """
-        Generate pseudorandom number.
-        """
-        return ''.join([str(random.randint(0, 9)) for i in range(length)])
-
     def create_block(self, nonce, previous_hash):
         """
         Builds a new block and uses the previous_hash from the corresponding old block
@@ -33,8 +29,18 @@ class Blockchain:
         :return: Returns a newly created block on the block chain
         """
         # Copy all the transactions from the previous node
-        self.transactions = []
-        self.chain[nonce] = '00'
+        block = {'block_number': len(self.chain) + 1,
+                'timestamp': date.today(),
+                'transactions': self.transactions,
+                'nonce': nonce,
+                'previous_hash': previous_hash
+                }
+
+        self.transactions = []  # reset the following block node
+        self.chain.append(block)
+        return block
+
+
 
 
 
@@ -48,17 +54,32 @@ class Blockchain:
         return self.chain[hash_block]
 
 
+def generate_nonce(length=8):
+    """
+    Generate pseudorandom number.
+    """
+    return ''.join([str(random.randint(0, 9)) for i in range(length)])
+
+
 if __name__ == '__main__':
-    block = Blockchain()
 
 
-
+    """
+        Tested the functionality of generating a random nonce
+    """
+    # block = Blockchain()
+    # print(f"The initial block transactions " + str(block.transactions))
+    # list = []
     # while True:
-    #     action = input("Do you want to create a seperate hash block value"
-    #                    "[Y]es or [N]o").upper()
-    #     if action not in 'YN' or len(action) != 1:
-    #         print("I'm not sure what {} command you enter: ".format(action))
-    #     elif action == 'Y':
-    #         print(str(block.compute_hash(block.node_id)))
-    #     elif action == 'N':
+    #     nonce = generate_nonce()
+    #     if nonce not in list:
+    #         list.append(nonce)
+    #         print(nonce)
+    #     else:
+    #         print("This is not a valid nonce")
     #         break
+
+    # y = json.dumps(block, indent=4, sort_keys=True)
+    # print(f"The following object has the json dump of" + y)
+
+
