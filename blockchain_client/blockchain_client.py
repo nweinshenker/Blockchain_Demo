@@ -9,9 +9,13 @@ from Crypto.Cipher import AES, PKCS1_OAEP
 import requests
 from flask import Flask, jsonify, request, render_template
 
-app = Flask(__name__)
+app = Flask(__name__, templates="../templates")
 
-@app.route()
+@app.route('/')
+def index():
+    return("why aren't you working")
+    # return render_template('./index.html')
+
 
 
 
